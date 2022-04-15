@@ -42,7 +42,7 @@ def upload_task():
                     mqtt_msg = mqtt_msg + "," + "\"" + i.split(':')[0] + "\"" + ":" + "\"" + i.split(':')[1] + "\""  
             mqtt_msg = "{" + mqtt_msg + "}" 
             mqtt_msg = mqtt_msg.replace(",", "", 1)
-            print(mqtt_msg)  # "{"s_t0":"26.38","app":"MAPS6","date":"2022-04-12","s_d0":"4","s_h0":"52.0","device_id":"B827EB8E9774","s_gg":"1","ver_app":"6.4.3-a","time":"09:09:31"}"
+            print(mqtt_msg)
             data = json.loads(mqtt_msg)
 
             msg = ""
