@@ -1,0 +1,47 @@
+[for MAPS6]
+docker build -t chiachin86/maps6-mqtts -f Dockerfile .
+
+docker run -p 8883:8883 -itd --restart unless-stopped \
+--net=host \
+--name maps6_mqtts \
+--mount type=bind,source=/home/pi/MAPS6_NTU_Special_MQTTS/data,destination=/home/MAPS6_MVP/data \
+--mount type=bind,source=/dev,destination=/dev \
+--privileged \
+-e "BROKER_IP=34.215.240.96" -e "PUB_IP=60.250.151.187" \
+chiachin86/maps6-mqtts
+
+[for AWS Test Server]
+[broker]
+# Use volume to save sensor's data in the Docker container
+docker volume create --name db-data
+docker volume ls
+
+docker build -t chiachin86/oqs-mqtts -f Dockerfile .
+
+docker run -p 8883:8883 -itd \
+--net=host \
+--name mqtt_broker \
+-e "BROKER_IP=34.215.240.96" -e "EXAMPLE=broker-start.sh" \
+chiachin86/oqs-mqtts
+
+[for AWS Test Server]
+[subscriber]
+
+docker run -p 8883:8883 -v db-data:/db/data -itd \
+--net=host \
+--name mqtt_sub \
+-e "BROKER_IP=34.215.240.96" -e "SUB_IP=34.215.240.96" -e "EXAMPLE=subscriber-start.sh" \
+chiachin86/oqs-mqtts
+
+[for AWS Test Server]
+[RESTful_API]
+docker build -t chiachin86/mqtts_send -f Dockerfile .
+
+docker run -p 443:443 -v db-data:/db/data -itd \
+--net=host \
+--name mqtts_send \
+chiachin86/mqtts_send
+
+----------------
+
+docker push chiachin86/maps6-mqtt

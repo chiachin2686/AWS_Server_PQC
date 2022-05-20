@@ -72,7 +72,7 @@ RUN ./Configure shared linux-x86_64 -lm --prefix=$OPENSSL_LIB_PATH/ \
 # Let Mosquitto Client to support KEM algorithm
 RUN CP=`grep "\/\* $KEM_ALG \*\/" /test/kem_list.txt | awk '{print $1}'` && \
     sed -i '/static const uint16_t eccurves_default/a\    '$CP'                      \/\* '$KEM_ALG' \*\/' ssl/t1_lib.c && \
-    make -j$(nproc) && make install && echo "OQS-OpenSSL installed successfully" || exit 1
+    make -j$(nproc) && make install_sw && echo "OQS-OpenSSL installed successfully" || exit 1
 
 # Build and install Mosquitto
 WORKDIR $SOURCE_PATH
