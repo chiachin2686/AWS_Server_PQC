@@ -3,8 +3,9 @@ import time
 import requests
 import threading
 import json
+import subprocess
 
-filename="/db/data/logfile.txt"
+filename="/db/data/mqtt_sensordata.txt"
 fg = 0
 global b_time
 global a_time
@@ -16,10 +17,14 @@ Restful_URL = "https://data.lass-net.org/Upload/MAPS-secure.php?"
 #APP ID
 APP_ID = "MAPS6"
 
+# check data
+p = subprocess.Popen("/bin/bash /test/check_file.sh &", shell=True)
+p.wait()
+
 def upload_task():
     while True:
         global fg
-        time.sleep(10)
+        time.sleep(1)
         
         # the file modified time
         b_time = os.stat(filename).st_mtime
@@ -47,15 +52,15 @@ def upload_task():
 
             msg = ""
 
-            # if((data['gps_lat'] != "") and (data['gps_lon'] != "")):
-            #     msg = msg + "|gps_lon=" + data['gps_lon'] + "|gps_lat=" + data['gps_lat']
-            # if(data['s_g8'] != 65535):
-            #     msg = msg + "|s_g8=" + data['s_g8']
+            if(('gps_lat' in data) and ('gps_lon' in data)):
+                msg = msg + "|gps_lon=" + data['gps_lon'] + "|gps_lat=" + data['gps_lat']
+            if('s_g8' in data):
+                msg = msg + "|s_g8=" + data['s_g8']
 
             msg = msg + "|s_t0=" + data['s_t0'] + "|app=" + data['app'] + "|date=" + data['date'] + "|s_d0=" + data['s_d0'] + "|s_h0=" + data['s_h0'] + "|device_id=" + data['device_id'] + "|s_gg=" + data['s_gg'] + "|ver_app=" + data['ver_app'] + "|time=" + data['time']
 
-            # if((data['s_s0L'] != 0) and (data['s_s0L'] != float("inf"))):
-            #     msg = msg + "|s_s0=" + data['s_s0'] + "|s_s0M=" + data['s_s0M'] + "|s_s0m=" + data['s_s0m'] + "|s_s0L=" + data['s_s0L']
+            if('s_s0L' in data):
+                msg = msg + "|s_s0=" + data['s_s0'] + "|s_s0M=" + data['s_s0M'] + "|s_s0m=" + data['s_s0m'] + "|s_s0L=" + data['s_s0L']
 
             print("message ready")
 

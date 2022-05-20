@@ -28,10 +28,10 @@ use_identity_as_username true
 " > mosquitto.conf
 
 # generate the password file(add username and password) for the mosquitto MQTT broker
-mosquitto_passwd -b -c passwd user1 1234
+#mosquitto_passwd -b -c passwd user1 1234
 
 # generate the Access Control List
-echo -e "user user1\ntopic readwrite test/sensor1" > acl
+#echo -e "user user1\ntopic readwrite test/sensor1" > acl
 
 # generate the new server CSR using pre-set CA.key & cert
 openssl req -new -newkey $SIG_ALG -keyout /test/certs/server.key -out /test/certs/server.csr -nodes -subj "/O=test-server/CN=$BROKER_IP"

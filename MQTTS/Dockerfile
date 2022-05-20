@@ -29,7 +29,7 @@ ARG EXAMPLE=broker-start.sh
 # First stage: the full build image:
 
 FROM ubuntu:20.04 AS builder
-# FROM debian:buster AS builder
+# FROM debian:bullseye AS builder
 
 # Set timezone
 ENV TZ=Asia/Taipei
@@ -83,7 +83,7 @@ RUN git clone -b master https://github.com/eclipse/mosquitto.git mosquitto && cd
 # Second stage: Only create minimal image:
 
 FROM ubuntu:20.04
-# FROM debian:buster
+# FROM debian:bullseye
 
 ARG OPENSSL_LIB_PATH
 ARG SIG_ALG

@@ -1,5 +1,5 @@
 FROM ubuntu:20.04 AS builder
-# FROM debian:buster AS builder
+# FROM debian:bullseye AS builder
 
 # Set timezone
 ENV TZ=Asia/Taipei
