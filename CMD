@@ -45,3 +45,7 @@ chiachin86/mqtts_send
 ----------------
 
 docker push chiachin86/maps6-mqtt
+
+# message description
+{s_t0:29.91,app:MAPS6,date:2022-05-21,s_d0:16,s_h0:63.58,device_id:B827EB8E9774,s_gg:42,ver_app:6.4.3-a,time:05:39:28}
+{s_t0:26.4,app:MAPS6,date:2022-05-20,s_d0:0,s_h0:60.28,device_id:B827EB074653,s_gg:1,ver_app:6.5.0-p,time:16:16:21}
