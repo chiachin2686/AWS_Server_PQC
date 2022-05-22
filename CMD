@@ -42,6 +42,12 @@ docker run -p 443:443 -v db-data:/db/data -itd \
 --name mqtts_send \
 chiachin86/mqtts_send
 
+docker run -p 443:443 -v db-data:/db/data -it \
+--net=host \
+--name sending_test \
+--mount type=bind,source="$(pwd)"/test,target=/test \
+chiachin86/mqtts_send /bin/bash
+
 ----------------
 
 docker push chiachin86/maps6-mqtt

@@ -13,9 +13,8 @@ function file_checked(){
                 echo "### File doesn't change ###"
             else
                 grep "time" ${file_path} | tail -1 > /db/data/mqtt_sensordata.txt  # get the last data
-                if [[ "$counter" -gt 1000 ]]; then  # if counter > 1000, reset the log file
-                    rm ${file_path}
-                    touch ${file_path}
+                if [[ "$counter" -gt 1000 ]]; then
+                    sed -i '1,1000d' ${file_path}
                     counter=0
                 else
                     counter=$((counter+1))
