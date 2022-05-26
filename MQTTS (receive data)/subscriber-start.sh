@@ -10,13 +10,20 @@ openssl x509 -req -in /test/certs/subscriber.csr -out /test/certs/subscriber.crt
 # modify file permissions
 chmod 777 certs/*
 
-# generate a log file
-touch /db/data/logfile.txt
+# generate a flag
+touch /db/data/flag.txt
 
 # execute mosquitto MQTT subscriber
-
 while [ 1 ]; do
-    mosquitto_sub -h $BROKER_IP -t test/sensor1 -q 0 -i "Client_sub" -k 600 \
-    --tls-version tlsv1.3 --cafile /test/certs/CA.crt \
-    --cert /test/certs/subscriber.crt --key /test/certs/subscriber.key >> /db/data/logfile.txt
+    for ((i=1;i<=20;i++))
+    do
+        # generate a log file
+        touch /db/data/logfile$i.txt
+        # continuous subscription for 3 minutes
+        mosquitto_sub -h $BROKER_IP -t test/sensor1 -q 0 -i "Client_sub" -k 600 -W 180 \
+        --tls-version tlsv1.3 --cafile /test/certs/CA.crt \
+        --cert /test/certs/subscriber.crt --key /test/certs/subscriber.key >> /db/data/logfile$i.txt && echo "success" || echo "fail"
+        echo $i > /db/data/flag.txt
+        sleep 1
+    done
 done
